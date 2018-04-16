@@ -4,7 +4,8 @@ node_modules
 /*.js
 !/index.js
 !/.babelrc.js
+!/jest.config.js
 
 # secrets
 .env
-
+.npmrc

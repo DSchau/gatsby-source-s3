@@ -1,5 +1,5 @@
 jest.mock('aws-sdk');
-import { sourceNodes } from '../src/gatsby-node';
+import { sourceNodes } from '../gatsby-node';
 import AWS from 'aws-sdk';
 
 let s3;
@@ -11,6 +11,10 @@ beforeEach(() => {
 const getGatsbyNodeAPIConfig = (spy = jest.fn()) => ({
   boundActionCreators: {
     createNode: spy,
+  },
+  cache: {
+    get: jest.fn(),
+    set: jest.fn(),
   },
 });
 
@@ -65,7 +69,7 @@ test('it calls create node', async () => {
       Url: expect.any(String),
       Name: expect.any(String),
       children: [],
-      id: expect.stringContaining('__s3__'),
+      id: expect.stringContaining('s3-'),
       internal: {
         content: expect.any(String),
         contentDigest: expect.any(String),

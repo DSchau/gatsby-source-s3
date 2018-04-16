@@ -1,4 +1,4 @@
-import { schema } from '../src/plugin-options';
+import { schema } from '../plugin-options';
 
 const getAwsCredentials = () => {
   return {

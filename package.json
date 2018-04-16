@@ -13,6 +13,7 @@
     "babel-plugin-transform-class-properties": "~6.24.1",
     "babel-plugin-transform-object-rest-spread": "~6.26.0",
     "babel-preset-env": "~1.6.1",
+    "better-queue": "~3.8.7",
     "cross-env": "~5.1.4",
     "dotenv": "~5.0.1",
     "husky": "~0.14.3",
@@ -24,11 +25,15 @@
     "precommit": "pretty-quick --staged",
     "build": "babel src --out-dir . --ignore __tests__",
     "prepublishOnly": "cross-env NODE_ENV=production npm run build",
-    "test": "jest",
+    "test": "npm run test:unit",
+    "test:unit": "jest --config jest.config.js",
+    "test:e2e": "jest --config e2e-tests/jest.config.js",
     "watch": "babel -w src --out-dir . --ignore __tests__"
   },
   "dependencies": {
-    "aws-sdk": "~2.224.1",
-    "yup": "~0.24.1"
+    "aws-sdk": "^2.224.1",
+    "gatsby-source-filesystem": "~1.5.32",
+    "lodash.omit": "~4.5.0",
+    "yup": "^0.24.1"
   }
 }

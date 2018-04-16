@@ -43,3 +43,25 @@ query IndexQuery {
   }
 }
 ```
+
+### Image processing
+
+This plugin also sources any detected images in the S3 bucket(s) for local processing with sharp/Gatsby. Install gatsby-transformer-sharp, gatsby-plugin-sharp to tie into this processing.
+
+```graphql
+query IndexQuery {
+  images: allS3Image {
+    edges {
+      node {
+        file: localFile {
+          image: childImageSharp {
+            sizes(maxWidth: 400, maxHeight: 400) {
+              ...GatsbyImageSharpSizes_withWebp_tracedSVG
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
