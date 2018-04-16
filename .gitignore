@@ -1,0 +1,10 @@
+node_modules
+*-error.log
+
+/*.js
+!/index.js
+!/.babelrc.js
+
+# secrets
+.env
+
