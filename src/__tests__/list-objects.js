@@ -1,5 +1,5 @@
 jest.mock('aws-sdk');
-import { listObjects } from '../src/list-objects';
+import { listObjects } from '../list-objects';
 import AWS from 'aws-sdk';
 
 let s3;

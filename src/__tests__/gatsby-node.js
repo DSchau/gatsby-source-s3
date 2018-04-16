@@ -1,5 +1,5 @@
 jest.mock('aws-sdk');
-import { sourceNodes } from '../src/gatsby-node';
+import { sourceNodes } from '../gatsby-node';
 import AWS from 'aws-sdk';
 
 let s3;
