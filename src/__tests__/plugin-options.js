@@ -1,4 +1,7 @@
-import { schema } from '../plugin-options';
+const getSchema = () => {
+  delete require.cache[require.resolve('../plugin-options')];
+  return require('../plugin-options').schema;
+};
 
 const getAwsCredentials = () => {
   return {
@@ -7,9 +10,19 @@ const getAwsCredentials = () => {
   };
 };
 
+const setEnvVars = vars => {
+  Object.keys(vars).forEach(key => {
+    process.env[key] = vars[key];
+  });
+
+  return () => {
+    Object.keys(vars).forEach(key => delete process.env[key]);
+  };
+};
+
 test('it throws when aws key is not specified', async () => {
   try {
-    await schema.validate({
+    await getSchema().validate({
       buckets: ['test'],
     });
   } catch (e) {
@@ -21,7 +34,7 @@ test('it throws when aws key is not specified', async () => {
 
 test('it throws when buckets are not defined', async () => {
   try {
-    await schema.validate({
+    await getSchema().validate({
       aws: getAwsCredentials(),
     });
   } catch (e) {
@@ -31,7 +44,7 @@ test('it throws when buckets are not defined', async () => {
 
 test('it throws when empty buckets', async () => {
   try {
-    await schema.validate({
+    await getSchema().validate({
       aws: getAwsCredentials(),
       buckets: [],
     });
@@ -42,7 +55,7 @@ test('it throws when empty buckets', async () => {
 
 test('it passes with correct config', async () => {
   try {
-    await schema.validate({
+    await getSchema().validate({
       aws: getAwsCredentials(),
       buckets: ['photos.dustinschau.com'],
     });
@@ -51,4 +64,27 @@ test('it passes with correct config', async () => {
   } finally {
     expect.assertions(0);
   }
+});
+
+test('it passes with environment variables configured', async () => {
+  const vars = {
+    AWS_ACCESS_KEY_ID: '1234',
+    AWS_SECRET_ACCESS_KEY: 'hunter2',
+  };
+  const reset = setEnvVars(vars);
+
+  const schema = await getSchema().validate({
+    buckets: ['photos.dustinschau.com'],
+  });
+
+  expect(schema).toEqual(
+    expect.objectContaining({
+      aws: {
+        accessKeyId: vars.AWS_ACCESS_KEY_ID,
+        secretAccessKey: vars.AWS_SECRET_ACCESS_KEY,
+      },
+    })
+  );
+
+  reset();
 });
