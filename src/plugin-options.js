@@ -6,8 +6,5 @@ export const schema = yup.object().shape({
     secretAccessKey: yup.string().required(),
     region: yup.string(),
   }),
-  buckets: yup
-    .array()
-    .of(yup.string())
-    .required(),
+  buckets: yup.array().required(),
 });

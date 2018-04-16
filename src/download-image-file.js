@@ -1,12 +1,16 @@
 import { createRemoteFileNode } from 'gatsby-source-filesystem';
 
-export function downloadImageFile(node, { store, cache, createNode, touchNode }) {
+export async function downloadImageFile(
+  node,
+  { store, cache, createNode, touchNode }
+) {
+  const clone = Object.assign({}, node);
   let imageNodeId;
-  const cacheKey = node.id;
+  const cacheKey = clone.id;
 
   const cacheData = await cache.get(cacheKey);
 
-  if (cacheData && node.LastModified === cacheData.LastModified) {
+  if (cacheData && clone.LastModified === cacheData.LastModified) {
     imageNodeId = cacheData.imageNodeId;
     touchNode(cacheData.imageNodeId);
   }
@@ -14,10 +18,10 @@ export function downloadImageFile(node, { store, cache, createNode, touchNode })
   if (!imageNodeId) {
     try {
       const imageNode = await createRemoteFileNode({
-        url: node.url,
+        url: clone.Url,
         store,
         cache,
-        createNode
+        createNode,
       });
 
       if (imageNode) {
@@ -25,11 +29,15 @@ export function downloadImageFile(node, { store, cache, createNode, touchNode })
 
         await cache.set(cacheKey, {
           imageNodeId,
-          LastModified: node.LastModified
+          LastModified: clone.LastModified,
         });
       }
     } catch (e) {} // ignore
   }
 
-  return node;
+  if (imageNodeId) {
+    clone.localFile___NODE = imageNodeId;
+  }
+
+  return clone;
 }
