@@ -24,9 +24,7 @@ export const listObjects = (bucket, config = {}, maxKeys = 1000) => {
         .promise()
         .then(content => {
           if (bucket.Filter) {
-            content.Contents = (content.Contents || []).filter(item =>
-              bucket.Filter(item)
-            );
+            content.Contents = (content.Contents || []).filter(bucket.Filter);
           }
 
           return content;

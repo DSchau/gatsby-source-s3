@@ -47,24 +47,26 @@ export async function sourceNodes(
           createNode(node);
 
           if (isImage(Key)) {
-            const extension = Key.split('.').pop();
-            const imageNode = {
-              ...node,
-              extension,
-              id: `s3-image-${Key}`,
-              internal: {
-                type: 'S3Image',
-                contentDigest: createContentDigest(content),
-                content: JSON.stringify(content),
+            const Extension = Key.split('.').pop();
+            const imageNode = await downloadImageFile(
+              {
+                ...node,
+                Extension,
+                id: `s3-image-${Key}`,
+                internal: {
+                  type: 'S3Image',
+                  contentDigest: createContentDigest(content),
+                  content: JSON.stringify(content),
+                },
               },
-            };
-            const clone = await downloadImageFile(imageNode, {
-              store,
-              cache,
-              createNode,
-              touchNode,
-            });
-            createNode(clone);
+              {
+                store,
+                cache,
+                createNode,
+                touchNode,
+              }
+            );
+            createNode(imageNode);
           }
         })
       );
