@@ -21,7 +21,7 @@ plugins: [
     options: {
       aws: {
         accessKeyId: 'youraccesskeyhere',
-        secretAccessKeyId: 'hunter2',
+        secretAccessKey: 'hunter2',
       },
       buckets: ['your-s3-bucket.com'],
     },
