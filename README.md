@@ -23,7 +23,7 @@ plugins: [
         accessKeyId: 'youraccesskeyhere',
         secretAccessKey: 'hunter2',
       },
-      buckets: ['your-bucket-name'],
+      buckets: ['your-s3-bucket-name'],
     },
   },
 ];
