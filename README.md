@@ -7,7 +7,7 @@ Source plugin for pulling in S3 data from AWS for further processing via Gatsby/
 ## Install
 
 ```bash
-npm install gatsby-source-s3 --save-dev
+npm install gatsby-source-s3 --save
 ```
 
 ## How to use
