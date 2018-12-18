@@ -35,6 +35,8 @@ export async function downloadImageFile(
     } catch (e) {} // ignore
   }
 
+  console.log(` Creating ${imageNodeId}`);
+
   if (imageNodeId) {
     clone.localFile___NODE = imageNodeId;
   }
