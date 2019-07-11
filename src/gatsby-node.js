@@ -24,6 +24,7 @@ export async function sourceNodes(
   );
 
   const buckets = await listObjects(bucketsConfig, awsConfig);
+  const region = awsConfig.region;
 
   await Promise.all(
     buckets.map(({ Contents, ...rest }, index) => {
@@ -33,7 +34,7 @@ export async function sourceNodes(
           const node = {
             ...rest,
             ...content,
-            Url: `https://s3.amazonaws.com/${rest.Name}/${Key}`,
+            Url: `https://s3.${region ? `${region}.` : ''}amazonaws.com/${rest.Name}/${Key}`,
             id: `s3-${Key}`,
             children: [],
             parent: '__SOURCE__',
