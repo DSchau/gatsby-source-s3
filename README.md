@@ -22,6 +22,7 @@ plugins: [
       aws: {
         accessKeyId: 'youraccesskeyhere',
         secretAccessKey: 'hunter2',
+        sessionToken: 'yoursessiontokenhere', // optional session token
       },
       buckets: ['your-s3-bucket-name'],
     },
