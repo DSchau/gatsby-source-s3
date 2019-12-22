@@ -4,8 +4,8 @@ export const schema = yup.object().shape({
   aws: yup
     .object()
     .shape({
-      accessKeyId: yup.string().required(),
-      secretAccessKey: yup.string().required(),
+      accessKeyId: yup.string(),
+      secretAccessKey: yup.string(),
       sessionToken: yup.string(),
       region: yup.string(),
     })
