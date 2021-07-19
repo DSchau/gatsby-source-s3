@@ -11,13 +11,9 @@ const createContentDigest = obj =>
     .digest('hex');
 
 const isImage = object => /\.(jpe?g|png|webp|tiff?)$/i.test(object);
-const getBucketName = () => {};
 
-export async function sourceNodes(
-  { boundActionCreators, store, cache },
-  pluginOptions
-) {
-  const { createNode, touchNode } = boundActionCreators;
+export async function sourceNodes({ actions, store, cache }, pluginOptions) {
+  const { createNode, touchNode } = actions;
 
   const { aws: awsConfig, buckets: bucketsConfig } = await schema.validate(
     pluginOptions
@@ -34,7 +30,11 @@ export async function sourceNodes(
           const node = {
             ...rest,
             ...content,
-            Url: `https://s3.${region ? `${region}.` : ''}amazonaws.com/${rest.Name}/${Key}`,
+            Url: awsConfig.endpoint
+              ? `${awsConfig.endpoint.replace(/\/$/, '')}/${rest.Name}/${Key}`
+              : `https://s3.${region ? `${region}.` : ''}amazonaws.com/${
+                  rest.Name
+                }/${Key}`,
             id: `s3-${Key}`,
             children: [],
             parent: '__SOURCE__',
